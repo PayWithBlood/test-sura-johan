@@ -11,13 +11,13 @@
 ## Time spent
 | Part | Approximate time |
 |---|---|
-| A. Integration and data design | Included in candidate-reported 5-hour total; per-part time was not tracked. |
-| B. Integration component | Included in candidate-reported 5-hour total; per-part time was not tracked. |
-| C. Azure IaC and CI/CD | Included in candidate-reported 5-hour total; per-part time was not tracked. |
-| D. Operations | Included in candidate-reported 5-hour total; per-part time was not tracked. |
-| E. Code review | Included in candidate-reported 5-hour total; per-part time was not tracked. |
-| F. Responsible AI | Included in candidate-reported 5-hour total; per-part time was not tracked. |
-| **Total** | **5 hours (candidate-reported)** |
+| A. Integration and data design | 1 h 20 min |
+| B. Integration component | 1 h 20 min |
+| C. Azure IaC and CI/CD | 40 min |
+| D. Operations | 30 min |
+| E. Code review | 30 min |
+| F. Responsible AI | 20 min |
+| **Total** | **5 hours (candidate-reported; per-part split reconstructed approximately after the fact)** |
 
 ## Stack
 - Practical part: Java 21, Spring Boot 3.3.13, Maven, JUnit 5

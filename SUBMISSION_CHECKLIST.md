@@ -3,7 +3,7 @@
 Status for the current delivery. Review the privacy exception before submission.
 
 ## General
-- [x] `SUBMISSION.md` contains candidate ID, repository URL, candidate-reported total hours, submission date, stack and instructions for the final SHA.
+- [x] `SUBMISSION.md` contains candidate ID, repository URL, candidate-reported total hours, approximate per-part split, submission date, stack and instructions for the final SHA.
 - [x] `AI_USAGE.md` completed honestly.
 - [x] `docs/ASSUMPTIONS.md` lists design assumptions.
 - [ ] No real personal data in repository/history: the candidate's email is included as ID at their request. This conflicts with the assessment's no-personal-data rule; confirm with recruiter or use an approved alternative if required.
