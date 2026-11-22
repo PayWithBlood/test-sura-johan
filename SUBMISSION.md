@@ -4,22 +4,31 @@
 | Field | Value |
 |---|---|
 | Candidate ID | johan_12_27@hotmail.com |
-| Final commit SHA | **Use the final local HEAD SHA reported after review** |
-| Date/time and time zone | **Candidate to enter actual submission time** |
+| Repository URL | https://github.com/PayWithBlood/test-sura-johan |
+| Final commit SHA | Use the SHA of the final local `HEAD` printed after this metadata commit; include it in the recruiter reply. |
+| Date of submission | 21 Nov 2026, COT; prepared before the 23:59 deadline. Recruiter reply is still pending. |
 
 ## Time spent
-Candidate must enter actual hours per part; not estimated by assistant.
+| Part | Approximate time |
+|---|---|
+| A. Integration and data design | Included in candidate-reported 5-hour total; per-part time was not tracked. |
+| B. Integration component | Included in candidate-reported 5-hour total; per-part time was not tracked. |
+| C. Azure IaC and CI/CD | Included in candidate-reported 5-hour total; per-part time was not tracked. |
+| D. Operations | Included in candidate-reported 5-hour total; per-part time was not tracked. |
+| E. Code review | Included in candidate-reported 5-hour total; per-part time was not tracked. |
+| F. Responsible AI | Included in candidate-reported 5-hour total; per-part time was not tracked. |
+| **Total** | **5 hours (candidate-reported)** |
 
 ## Stack
-- Practical: Java 21, Spring Boot 3.3.13, Maven, JUnit 5
-- Infrastructure: Bicep CLI 0.49.2
-- Pipeline: GitHub Actions
-- CI run link: Not run
+- Practical part: Java 21, Spring Boot 3.3.13, Maven, JUnit 5
+- Infrastructure as code: Bicep CLI 0.49.2; compiled successfully, not deployed
+- Pipeline: GitHub Actions; CI/CD definitions present, hosted workflows not run
+- Local verification: 8 Maven tests passed; OpenAPI and JSON Schema validated; both Mermaid diagrams rendered.
 
-## Start here
+## Where to start reading
 1. `docs/design/SOLUTION_DESIGN.md`
 2. `docs/adr/0001-salesforce-integration.md`
 3. `practical/README.md`
 
-## Gaps / next steps
-Review every file and enter actual hours and submission time. The local intake uses in-memory stubs; replace with durable Azure adapters before any production use. Validate Bicep against a target subscription, review network/RBAC, and run load/security checks. Confirm partial refund and retention policies before submission.
+## Known gaps and next steps
+The practical app uses in-memory inbox and queue adapters only in its local profile. Production still needs Cosmos/Change Feed, Service Bus, Key Vault and Salesforce adapters, plus APIM policies, durable retry/replay and load/security checks. Bicep compiled locally but was not checked against a subscription or deployed. Confirm partial-refund and retention rules. The recruiter reply remains to be sent with this repository URL and the final HEAD SHA.
