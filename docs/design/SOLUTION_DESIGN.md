@@ -43,44 +43,49 @@ sequenceDiagram
  participant W as Worker
  participant S as Salesforce
  participant T as Event topic
- P->>G: HTTPS POST + provider signature
- G->>I: route, rate/body limit
- I->>I: raw-byte HMAC, timestamp, schema, reference validation
- alt Invalid signature/schema
- I-->>P: 401/400; no acceptance
- else Valid
- I->>D: conditional durable insert by event key
- alt Duplicate
- D-->>I: existing receipt
- I-->>P: provider-specific 2xx
- else Store unavailable
- D-->>I: failure
- I-->>P: 503; provider retries
- else Committed
- I-->>P: 200/204 only after commit
- D->>Q: Change Feed relay, deterministic message ID
- Q->>W: session keyed by payment
- W->>W: compare occurrence time and version
- alt Stale
- W->>D: mark superseded; do not regress
- else Current
- W->>S: composite batch upsert
- alt 5xx/timeout/row lock
- W->>Q: delayed exponential retry
- else API-limit 403
- W->>W: circuit-break Salesforce, alert
- else validation/policy 400
- W->>D: action-required / DLQ
- else Success
- W->>D: mark recorded
- W->>T: canonical event
- end
- end
+ P->>G: HTTPS POST with provider signature
+ G->>I: Route and apply limits
+ I->>I: Verify raw-byte HMAC timestamp schema and policy reference
+ alt Invalid request
+  I-->>P: Reject request
+ else Valid request
+  I->>D: Conditionally insert by event key
+  alt Inbox unavailable
+   D-->>I: Storage failure
+   I-->>P: Return 503 so provider retries
+  else Inbox available
+   alt Duplicate event
+    D-->>I: Existing receipt
+    I-->>P: Return provider-specific success
+   else New event committed
+    D-->>I: Durable receipt
+    I-->>P: Return 200 or 204
+    D->>Q: Change Feed relay with deterministic ID
+    Q->>W: Deliver payment session
+    W->>W: Compare occurrence time and version
+    alt Event is stale
+     W->>D: Mark superseded and prevent regression
+    else Event advances state
+     W->>S: Composite batch upsert
+     alt Salesforce write fails
+      alt Transient error or row lock
+       W->>Q: Retry with exponential delay
+      else Permanent error
+       alt API quota reached
+        W->>W: Pause consumer and alert
+       else Validation error
+        W->>D: Mark action required and dead-letter
+       end
+      end
+     else Salesforce write succeeds
+      W->>D: Mark recorded
+      W->>T: Publish canonical event
+     end
+    end
+   end
+  end
  end
 ```
-
-Andina expects 200/204 within 5s; Quetzal and Austral accept 2xx within 10s. Salesforce work is asynchronous. A 2xx means durable inbox commit only.
-
 ## Canonical event and mappings
 Fields: `schemaVersion=1`, stable `eventId`, provider/country, nullable provider event ID, `paymentKey=provider:transactionId`, transaction ID, validated policy number, status (Pending/Captured/Failed/Refunded), decimal-string amount, uppercase ISO currency, provider state-change `occurredAt`, `receivedAt`, opaque correlation UUID, optional source version/reason code and superseded flag. Payer/token fields are excluded.
 | Provider | Transition ID / mapping |
