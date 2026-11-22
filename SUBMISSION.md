@@ -9,6 +9,8 @@
 | Date of submission | 21 Nov 2026, COT; prepared before the 23:59 deadline. Recruiter reply is still pending. |
 
 ## Time spent
+Per-part values are approximate allocations reconstructed afterward; the candidate-reported total is 5 hours.
+
 | Part | Approximate time |
 |---|---|
 | A. Integration and data design | 1 h 20 min |
@@ -17,7 +19,7 @@
 | D. Operations | 30 min |
 | E. Code review | 30 min |
 | F. Responsible AI | 20 min |
-| **Total** | **5 hours (candidate-reported; per-part split reconstructed approximately after the fact)** |
+| **Total** | **5 hours** |
 
 ## Stack
 - Practical part: Java 21, Spring Boot 3.3.13, Maven, JUnit 5
