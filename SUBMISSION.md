@@ -6,7 +6,7 @@
 | Candidate ID | johan_12_27@hotmail.com |
 | Repository URL | https://github.com/PayWithBlood/test-sura-johan |
 | Final commit SHA | Use the SHA of the final local `HEAD` printed after this metadata commit; include it in the recruiter reply. |
-| Date of submission | 21 Nov 2026, COT; prepared before the 23:59 deadline. Recruiter reply is still pending. |
+| Date of submission | 21 Nov 2026, COT; 23:51. |
 
 ## Time spent
 Per-part values are approximate allocations reconstructed afterward; the candidate-reported total is 5 hours.
