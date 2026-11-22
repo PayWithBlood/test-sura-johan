@@ -3,7 +3,7 @@
 ## Candidate
 | Field | Value |
 |---|---|
-| Candidate ID | **Candidate to complete** |
+| Candidate ID | johan_12_27@hotmail.com |
 | Final commit SHA | **Set after review and final commit** |
 | Date/time and time zone | **Candidate to enter actual submission time** |
 

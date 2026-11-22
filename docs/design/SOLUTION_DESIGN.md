@@ -86,6 +86,8 @@ sequenceDiagram
   end
  end
 ```
+Andina expects HTTP 200 or 204 within 5 seconds; Quetzal and Austral accept any 2xx within 10 seconds. Salesforce processing is asynchronous. A 2xx confirms durable inbox commit only.
+
 ## Canonical event and mappings
 Fields: `schemaVersion=1`, stable `eventId`, provider/country, nullable provider event ID, `paymentKey=provider:transactionId`, transaction ID, validated policy number, status (Pending/Captured/Failed/Refunded), decimal-string amount, uppercase ISO currency, provider state-change `occurredAt`, `receivedAt`, opaque correlation UUID, optional source version/reason code and superseded flag. Payer/token fields are excluded.
 | Provider | Transition ID / mapping |

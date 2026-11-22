@@ -1,9 +1,21 @@
-@description('Environment name') @allowed(['dev','test','prod']) param environment string
-@description('Resource name prefix') param prefix string = 'meridian-pay'
-@description('Azure region') param location string = resourceGroup().location
-@description('Countries handled by this deployment') param countries array = ['MX','CO','CL']
-@description('Container image, pinned by digest in production') param intakeImage string
-@description('Tags') param tags object = {}
+@description('Environment name')
+@allowed(['dev', 'test', 'prod'])
+param environment string
+
+@description('Resource name prefix')
+param prefix string = 'meridian-pay'
+
+@description('Azure region')
+param location string = resourceGroup().location
+
+@description('Countries handled by this deployment')
+param countries array = ['MX', 'CO', 'CL']
+
+@description('Container image, pinned by digest in production')
+param intakeImage string
+
+@description('Tags')
+param tags object = {}
 
 var suffix = uniqueString(resourceGroup().id, environment)
 var commonTags = union(tags, { environment: environment, workload: 'premium-payments' })
@@ -34,7 +46,8 @@ resource vault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     sku: { family: 'A', name: 'standard' }
     networkAcls: { bypass: 'AzureServices', defaultAction: 'Deny', ipRules: [], virtualNetworkRules: [] }
   }
-}resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
+}
+resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   name: '${prefix}-db-${environment}-${suffix}'
   location: location
   kind: 'GlobalDocumentDB'
@@ -109,7 +122,7 @@ resource intake 'Microsoft.App/containerApps@2024-03-01' = {
     configuration: { ingress: { external: false, targetPort: 8080, transport: 'http' }, secrets: [] }
     template: {
       scale: { minReplicas: environment == 'prod' ? 2 : 1, maxReplicas: environment == 'prod' ? 20 : 3, rules: [{ name: 'http-concurrency', http: { metadata: { concurrentRequests: '40' } } }] }
-      containers: [{ name: 'intake', image: intakeImage, resources: { cpu: 0.5, memory: '1Gi' }, env: [{ name: 'SPRING_PROFILES_ACTIVE', value: environment }, { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: appi.properties.ConnectionString }, { name: 'COSMOS_ENDPOINT', value: cosmos.properties.documentEndpoint }, { name: 'SERVICEBUS_NAMESPACE', value: sb.properties.serviceBusEndpoint }] }]
+      containers: [{ name: 'intake', image: intakeImage, resources: { cpu: json('0.5'), memory: '1Gi' }, env: [{ name: 'SPRING_PROFILES_ACTIVE', value: environment }, { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', value: appi.properties.ConnectionString }, { name: 'COSMOS_ENDPOINT', value: cosmos.properties.documentEndpoint }, { name: 'SERVICEBUS_NAMESPACE', value: sb.properties.serviceBusEndpoint }] }]
     }
   }
 }
@@ -129,7 +142,8 @@ resource vaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(vault.id, intake.id, '4633458b-17de-408a-b874-0445c86b69e6')
   scope: vault
   properties: { roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6'), principalId: intake.identity.principalId, principalType: 'ServicePrincipal' }
-}output serviceBusNamespace string = sb.name
+}
+output serviceBusNamespace string = sb.name
 output cosmosEndpoint string = cosmos.properties.documentEndpoint
 output keyVaultName string = vault.name
 output deployedCountries array = countries

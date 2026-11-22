@@ -25,8 +25,9 @@ paths:
         required: true
         content:
           application/json:
-            schema: { type: object }
-            description: Preserve original bytes for signature verification.
+            schema:
+              type: object
+              description: Preserve original bytes for signature verification.
       responses:
         '202': { description: Durably accepted or duplicate receipt. }
         '400': { description: Malformed/unsupported event. }
@@ -44,7 +45,7 @@ paths:
         - in: header
           name: X-Andina-Signature
           required: true
-          schema: { type: string, contentEncoding: base64 }
+          schema: { type: string }
           description: Base64 HMAC-SHA256 of timestamp + "." + exact body.
         - in: header
           name: X-Correlation-ID
@@ -54,8 +55,9 @@ paths:
         required: true
         content:
           application/json:
-            schema: { type: object }
-            description: Ignore unknown optional fields; do not log payer fields.
+            schema:
+              type: object
+              description: Ignore unknown optional fields; do not log payer fields.
       responses:
         '200': { description: Durably accepted or duplicate receipt. }
         '400': { description: Malformed/unsupported event. }
