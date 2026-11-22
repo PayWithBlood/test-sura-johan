@@ -12,5 +12,3 @@ Reviewed the scenario, provider specifications/test vectors, Salesforce model/li
 ## Discarded or corrected
 Did not conceal AI use because the assessment requires disclosure. Used exact decimal arithmetic rather than floating point; treated Andina retry IDs as attempt IDs and its v2.3 policy reference as untrusted input; excluded payer/token fields from canonical events. Fixed Mermaid and OpenAPI errors found by validators and added the HTTP controller plus local-only fake adapters after finding the first draft lacked routes.
 
-## Data shared with AI tools
-The fictional assessment repository was read, including fictional provider test secrets and synthetic payer examples. The candidate also supplied the email address used as Candidate ID in `SUBMISSION.md`; it is included there at the candidate's request. No other real credentials, real payer data or employer-confidential information were intentionally supplied.
