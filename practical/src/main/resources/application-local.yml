@@ -1,0 +1,6 @@
+# Synthetic fixture secrets for local development only. Never use this profile in Azure.
+webhooks:
+  quetzal:
+    secret: qz_test_whsec_4f8a1c2e9b7d
+  andina:
+    secret: andina_test_secret_7c3e19ab

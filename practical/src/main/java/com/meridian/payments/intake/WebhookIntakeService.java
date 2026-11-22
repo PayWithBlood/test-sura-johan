@@ -7,6 +7,7 @@ public final class WebhookIntakeService {
  private final ObjectMapper json=new ObjectMapper(); private final Inbox inbox; private final EventPublisher publisher; private final Clock clock;
  public WebhookIntakeService(Inbox i,EventPublisher p,Clock c){inbox=i;publisher=p;clock=c;}
  public Result quetzal(byte[] raw,String header,String secret,UUID correlation){
+  if(header==null||secret==null)return Result.reject(401,"missing_signature");
   try{
    String[] h=header.split(","); String t=null; List<String> sigs=new ArrayList<>();
    for(String part:h){String[] kv=part.trim().split("=",2); if(kv.length!=2)throw new Bad("bad_signature_header"); if(kv[0].equals("t"))t=kv[1]; if(kv[0].equals("v1"))sigs.add(kv[1]);}
@@ -23,6 +24,7 @@ public final class WebhookIntakeService {
   }catch(Bad e){return Result.reject(400,e.getMessage());}catch(Exception e){return Result.reject(400,"malformed_request");}
  }
  public Result andina(byte[] raw,String timestamp,String signature,String secret,UUID correlation){
+  if(timestamp==null||signature==null||secret==null)return Result.reject(401,"missing_signature");
   try{
    Instant signed=OffsetDateTime.parse(timestamp).toInstant();
    if(Duration.between(signed,clock.instant()).abs().compareTo(Duration.ofMinutes(10))>0)return Result.reject(401,"timestamp_outside_tolerance");
