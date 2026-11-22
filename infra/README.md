@@ -1,7 +1,3 @@
 # Infrastructure as code
-
-> Replace this file with your own README. It must cover at least:
-
-- Tool and version (Bicep or Terraform)
-- Structure, modules and parameters per environment and country
-- Whether and how you validated the code (without deploying)
+Bicep source is `main.bicep`; deploy is intentionally not run. Parameters include environment (dev/test/prod), region, image and country list. Names are unique per resource group. It defines Container Apps, Cosmos DB, Service Bus Premium work queue/session/DLQ and event topic, Key Vault placeholder policy, managed identity/RBAC, Log Analytics, App Insights and DLQ alert.
+Validate locally with Azure CLI/Bicep: `az bicep build --file infra/main.bicep`; no validation result is claimed until actually run. Review role-definition IDs/API versions against target subscription and complete private DNS/endpoints, network rules, Key Vault and alert action group before deployment. The draft uses system-assigned identity; production should separate intake, relay, worker and operations identities, each with only needed roles. No secrets or real endpoint credentials are parameters.

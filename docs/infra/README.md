@@ -1,1 +1,2 @@
-
+# Infrastructure notes
+The IaC source is `infra/main.bicep`; the service rationale and indicative monthly cost are in `AZURE_SERVICES.md`. CD is defined in `.github/workflows/deploy.yml` as manually started dev → test → prod, with GitHub environment approvals for test/prod and Azure federated OIDC (no client secret). It expects environment variables and a prebuilt immutable image digest. No CD workflow was run and no Azure deployment occurred.

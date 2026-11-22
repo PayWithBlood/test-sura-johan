@@ -1,0 +1,2 @@
+# API contracts
+OpenAPI defines APIM ingress; JSON Schema defines canonical events. Success means durable inbox commit, not Salesforce completion. Andina returns 200 within 5s; Quetzal/Austral accept 2xx within 10s. Verify raw bytes before parsing. Ignore unknown optional provider fields. Additive canonical fields are compatible; breaking semantics/fields need a new schema major version and consumer migration. Signature/route changes require API versioning and provider coordination. Never publish payer fields, tokens, raw bodies or secrets.

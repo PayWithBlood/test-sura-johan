@@ -1,9 +1,3 @@
-# Practical part — Payment notification intake (MX, CO)
-
-> Replace this file with your own README. It must cover at least:
-
-- Stack and versions
-- How to build and run the tests
-- Project structure
-- What is stubbed and how
-- Known gaps
+# Practical intake — Mexico and Colombia
+Java 21, Spring Boot 3.3, Maven, JUnit 5. From this directory run `mvn test`. `WebhookIntakeService` verifies raw-byte signatures, timestamp tolerances, maps events and calls inbox/publisher ports. Tests use supplied vectors, fixed clock, in-memory inbox and publisher.
+Known gaps: no HTTP controller/APIM policy, Cosmos/Change Feed or Service Bus adapter, Key Vault adapter, Salesforce worker, DLQ/replay or production telemetry. Ports are stubs; code makes no real service calls. Add gateway schema/size limits before deployment. Partial refunds and retention need business/privacy approval. Not production-ready.

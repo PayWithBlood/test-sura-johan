@@ -1,38 +1,25 @@
 # Submission
 
-> Complete every section. Keep it short — this is the reviewers' entry point.
-
 ## Candidate
-
 | Field | Value |
 |---|---|
-| Candidate ID (provided by your recruiter) | |
-| Final commit SHA | |
-| Date and time of submission (with time zone) | |
+| Candidate ID | **Candidate to complete** |
+| Final commit SHA | **Set after review and final commit** |
+| Date/time and time zone | **Candidate to enter actual submission time** |
 
 ## Time spent
-
-| Part | Approximate time |
-|---|---|
-| A. Integration and data design | |
-| B. Integration component | |
-| C. Azure IaC and CI/CD | |
-| D. Operations | |
-| E. Code review | |
-| F. Responsible AI | |
-| **Total** | |
+Candidate must enter actual hours for each part; not estimated by assistant.
 
 ## Stack
+- Practical: Java 21, Spring Boot 3.3, Maven, JUnit 5
+- Infrastructure: Bicep (record CLI version after validation)
+- Pipeline: GitHub Actions
+- CI link: Not run
 
-- Practical part (Part B): <!-- e.g., Mule 4.x + DataWeave 2 + MUnit 3 / Java 21 + Spring Boot 3.x -->
-- Infrastructure as code: <!-- Bicep / Terraform, version -->
-- Pipeline: <!-- GitHub Actions / Azure Pipelines -->
-- CI run link (optional):
+## Start here
+1. `docs/design/SOLUTION_DESIGN.md`
+2. `docs/adr/0001-salesforce-integration.md`
+3. `practical/README.md`
 
-## Where to start reading
-
-<!-- Point reviewers to the two or three files that best show your thinking. -->
-
-## Known gaps and what I would do next
-
-<!-- Be honest: what is incomplete, what you would change with more time, and in what order. -->
+## Gaps / next steps
+Review every file and enter actual verification. Practical is intake core with stub ports, not deployed HTTP/Azure. Complete adapters, validate Bicep/pipeline, run load/security checks, confirm partial refund and retention policies, then provide final SHA and candidate metadata.

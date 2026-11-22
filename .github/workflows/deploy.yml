@@ -1,0 +1,47 @@
+name: deploy
+on:
+  workflow_dispatch:
+    inputs:
+      container_image:
+        description: Immutable registry image reference with digest
+        required: true
+        type: string
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - run: az deployment group create --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --template-file infra/main.bicep --parameters environment=dev intakeImage="${{ inputs.container_image }}"
+  test:
+    needs: dev
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - run: az deployment group create --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --template-file infra/main.bicep --parameters environment=test intakeImage="${{ inputs.container_image }}"
+  prod:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - run: az deployment group create --resource-group "${{ vars.AZURE_RESOURCE_GROUP }}" --template-file infra/main.bicep --parameters environment=prod intakeImage="${{ inputs.container_image }}"

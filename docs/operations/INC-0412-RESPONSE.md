@@ -1,0 +1,15 @@
+# INC-0412 response
+
+## First 30 minutes
+**0–5m:** Declare SEV-2, confirm Colombia-only impact, preserve dashboard/DLQ evidence, notify incident commander and Salesforce owner. Check intake acceptance versus queue and DLQ; 4,312 DLQ plus 43,120 Salesforce 400s and zero main-queue depth indicate consumer is draining into DLQ, not an Andina signature outage.
+**5–15m:** Sample DLQ error codes/reference shapes, compare Andina 2.3 changelog and deployment times. Check API budget (66%, not near limit), Salesforce availability/other integrations and validation-rule changes; avoid replay or raising delivery count. No payer data in incident channel.
+**15–30m:** Determine whether reference normalization is the dominant cause; validate affected policy number through authorized Salesforce support path. Pause CO consumer/DLQ churn if still active. Send safe customer-case counts/correlation IDs to support, define manual remediation path with policy/Salesforce owner and preserve sequence for reversals.
+
+## Likely cause and evidence
+Andina API 2.3 became effective Nov 28 23:00 and now forwards payer-entered references. Sample DLQ references `000215560` (prefix/digits missing) and lowercase `pol-co-000198004` fail Salesforce external-ID relationship lookup. Consumer retries every 400 to delivery 10, creating 4,312 DLQ items; other countries are healthy. New Salesforce validation rule is a possible secondary source but error excerpts explicitly say foreign key missing. Confirm by grouping all 43,120 400 response codes/messages and comparing reference format before/after 23:00; verify whether valid normalized IDs exist in Salesforce without logging PII.
+
+## Remediation and safe replay
+Keep malformed-reference events out of blind replay. Coordinate with Andina/checkout and policy operations to reconcile each reference against authoritative merchant checkout records; never infer policy digits from the last nine digits unless the business owner validates that rule. Correct provider mapping/normalization, add validation and quarantine unresolved policies. For resolved records, replay in occurredAt order per transaction, first verify current projection and event history, retain idempotent Salesforce external key, and ensure a later REVERSADA cannot be overwritten by APROBADA. Replay a canary batch, inspect per-record outcomes and policy automation side effects, then rate-limit batches while monitoring API budget and queue age. Record operator, reason and replay IDs. No policy status direct writes.
+
+## Prevention
+Alert on DLQ for all country queues and any 400-rate spike; classify permanent validation errors separately from transient 5xx. Contract test Andina v2.3 malformed/case-varied references and unknown fields. Add schema/reference validation before enqueue, dashboard the format distribution (without values), provider-change watch, integration/Salesforce release coordination, replay runbook and dead-letter ownership. Replace immediate abandon loop with delayed exponential retry only for transient faults.

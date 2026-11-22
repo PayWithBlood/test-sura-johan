@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: Meridian Premium Payment Webhooks
+  version: 1.0.0
+  description: APIM ingress; verify HMAC on original raw bytes.
+servers:
+  - url: https://{gateway}/payments
+    variables:
+      gateway: { default: api.meridian.example }
+paths:
+  /webhooks/quetzal:
+    post:
+      operationId: receiveQuetzal
+      parameters:
+        - in: header
+          name: Quetzal-Signature
+          required: true
+          schema: { type: string }
+          description: t=Unix seconds,v1=lowercase HMAC-SHA256 hex; v1 may repeat during rotation.
+        - in: header
+          name: X-Correlation-ID
+          required: false
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+            description: Preserve original bytes for signature verification.
+      responses:
+        '202': { description: Durably accepted or duplicate receipt. }
+        '400': { description: Malformed/unsupported event. }
+        '401': { description: Invalid signature or timestamp. }
+        '413': { description: Body exceeds APIM limit. }
+        '503': { description: Inbox unavailable; provider retries. }
+  /webhooks/andina:
+    post:
+      operationId: receiveAndina
+      parameters:
+        - in: header
+          name: X-Andina-Timestamp
+          required: true
+          schema: { type: string, format: date-time }
+        - in: header
+          name: X-Andina-Signature
+          required: true
+          schema: { type: string, contentEncoding: base64 }
+          description: Base64 HMAC-SHA256 of timestamp + "." + exact body.
+        - in: header
+          name: X-Correlation-ID
+          required: false
+          schema: { type: string, format: uuid }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+            description: Ignore unknown optional fields; do not log payer fields.
+      responses:
+        '200': { description: Durably accepted or duplicate receipt. }
+        '400': { description: Malformed/unsupported event. }
+        '401': { description: Invalid signature/timestamp. }
+        '413': { description: Body exceeds APIM limit. }
+        '503': { description: Inbox unavailable; provider retries. }

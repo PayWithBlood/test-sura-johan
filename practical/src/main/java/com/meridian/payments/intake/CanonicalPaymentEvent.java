@@ -1,0 +1,3 @@
+package com.meridian.payments.intake;
+import java.math.BigDecimal; import java.time.Instant; import java.util.UUID;
+public record CanonicalPaymentEvent(int schemaVersion,String eventId,String provider,String country,String paymentKey,String transactionId,String policyNumber,String status,BigDecimal amount,String currency,Instant occurredAt,Instant receivedAt,UUID correlationId,String providerEventId,String reasonCode) {}

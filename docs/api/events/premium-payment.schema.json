@@ -1,0 +1,27 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://api.meridian.example/schemas/premium-payment/1.0.0",
+  "title":"Canonical premium payment event",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["schemaVersion","eventId","provider","country","paymentKey","transactionId","policyNumber","status","amount","currency","occurredAt","receivedAt","correlationId"],
+  "properties":{
+    "schemaVersion":{"const":1},
+    "eventId":{"type":"string","minLength":1,"maxLength":160},
+    "provider":{"enum":["Quetzal","Andina","Austral"]},
+    "country":{"enum":["MX","CO","CL"]},
+    "providerEventId":{"type":["string","null"],"maxLength":100},
+    "paymentKey":{"type":"string","minLength":1,"maxLength":80},
+    "transactionId":{"type":"string","minLength":1,"maxLength":80},
+    "policyNumber":{"type":"string","pattern":"^POL-(MX|CO|CL)-[0-9]{9}$"},
+    "status":{"enum":["Pending","Captured","Failed","Refunded"]},
+    "amount":{"type":"string","pattern":"^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$"},
+    "currency":{"enum":["MXN","COP","CLP"]},
+    "occurredAt":{"type":"string","format":"date-time"},
+    "receivedAt":{"type":"string","format":"date-time"},
+    "correlationId":{"type":"string","format":"uuid"},
+    "sourceVersion":{"type":["string","null"],"maxLength":40},
+    "reasonCode":{"type":["string","null"],"maxLength":80},
+    "superseded":{"type":"boolean","default":false}
+  }
+}

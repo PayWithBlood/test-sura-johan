@@ -1,24 +1,16 @@
 # AI usage disclosure
-
-> **Mandatory.** AI assistants are allowed. What we value is how you governed their use.
-> If you did not use any AI tool, tick the box below and leave the rest empty.
-
-- [ ] I did not use any AI tool in this assessment.
+AI assistants are allowed and must be disclosed.
 
 ## Tools
-
-| Tool (name and version, if known) | Where you used it (part and files) | What you used it for |
+| Tool | Where used | Purpose |
 |---|---|---|
-| | | |
+| OpenAI Codex (GPT-6 desktop) | Assessment review; design, ADR, API, Java/tests, infrastructure, operations, PR review drafts | Read supplied scenario/reference material, draft deliverables and reason through edge cases. |
 
 ## Validation
+Reviewed scenario, provider specs/vectors, Salesforce model/limits, incident and PR. Test cases target supplied vectors and failure paths. Record actual test execution result before submission. Capacity numbers are calculations, not load-test findings. Candidate must review all changes and understand them before defense.
 
-<!-- For each significant use: how did you check the output? (tests you wrote or ran, documentation you checked, reasoning you redid, reviews you did line by line...). -->
+## Discarded or corrected
+Did not conceal AI use because the assessment requires disclosure. Chose durable inbox-before-2xx over an in-memory executor; exact decimal arithmetic over floating point; Andina transition identity over retry attempt ID; strict policy validation over guessing; and excluded payer/token data from canonical output.
 
-## What I discarded or corrected
-
-<!-- Suggestions you rejected or fixed, and why. Concrete examples are more useful than general statements. -->
-
-## Data I shared with AI tools
-
-<!-- What did you paste or upload into AI tools? Confirm that no secrets or personal data were shared. -->
+## Data shared
+The fictional assessment repository was read, including fictional provider test secrets and synthetic payer examples. No real credentials, real personal data, or employer-confidential information were intentionally supplied. Test secrets are sandbox fixtures, not production secrets.

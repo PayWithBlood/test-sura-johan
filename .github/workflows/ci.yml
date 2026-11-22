@@ -1,0 +1,22 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Test practical intake
+        working-directory: practical
+        run: mvn -B test
+      - name: Build Bicep (no deployment)
+        run: az bicep build --file infra/main.bicep --outfile /tmp/main.json
